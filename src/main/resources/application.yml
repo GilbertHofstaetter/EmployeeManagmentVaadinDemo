@@ -27,3 +27,6 @@ springdoc:
   oAuthFlow:
     authorizationUrl: http://localhost:8091/realms/Demo-Realm/protocol/openid-connect/auth
     tokenUrl: http://localhost:8091/realms/Demo-Realm/protocol/openid-connect/token
+
+vaadin:
+  url-mapping: /ui/*

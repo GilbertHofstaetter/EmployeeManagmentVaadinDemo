@@ -54,6 +54,8 @@ public class SecurityConfig {
         http.cors()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/ui/*").hasAnyRole("user", "admin")
                 .antMatchers(HttpMethod.GET, "/api/employee/list").hasAuthority("ROLE_user")
                 .antMatchers("/api/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAnyRole("admin")
                 .anyRequest()
@@ -62,6 +64,8 @@ public class SecurityConfig {
                 .oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(customJwtAuthenticationConverter());
+        http.csrf().disable();
+        http.cors().disable();
         http.logout()
                 .addLogoutHandler(keycloakLogoutHandler)
                 .logoutSuccessUrl("/loggedout")

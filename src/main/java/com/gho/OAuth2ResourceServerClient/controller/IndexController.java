@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
 
     @GetMapping("/loggedout")
-    public String loggedOut() {
-        return "Logged out";
+    public RedirectView loggedOut() {
+        return new RedirectView("/ui");
     }
 
     @GetMapping("/logout")
