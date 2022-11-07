@@ -12,7 +12,8 @@ Vaadin (v23) has been added as web front end.
 * http://localhost:8080/logout
 
 **Vaadin front end**
-http://localhost:8080/ui
+
+* http://localhost:8080/ui
 
 On February 2022 Keycloak announced the deprecation of its adapters, among other things the spring adapter https://www.keycloak.org/2022/02/adapter-deprecation.
 In my demo project I show how to integrate keycloak as an authorisation server in a spring boot project that serves as a client and a resource server based on spring security OAuth2.
