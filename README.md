@@ -13,6 +13,10 @@ Vaadin (v23) has been added as web front end.
 * http://localhost:8080/userOAuth2
 * http://localhost:8080/logout
 
+**Swagger-Ui**
+
+* http://localhost:8080/swagger-ui.html
+
 **Vaadin front end**
 
 * http://localhost:8080/ui
