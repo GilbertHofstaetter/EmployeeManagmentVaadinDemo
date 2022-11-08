@@ -10,17 +10,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamRegistration;
-import com.vaadin.flow.server.StreamResource;
-import com.vaadin.flow.server.VaadinSession;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.security.PermitAll;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.io.BufferedInputStream;
 
 @Route(value="test", layout = MainUI.class)
 @Transactional(/*readOnly = true*/)
