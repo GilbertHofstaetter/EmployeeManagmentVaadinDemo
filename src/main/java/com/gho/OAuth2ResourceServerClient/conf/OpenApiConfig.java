@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.List;
 
 //@SecurityScheme(name = "security_auth", type = SecuritySchemeType.OAUTH2,
 //        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
@@ -57,6 +58,6 @@ public class OpenApiConfig {
                 .info(new Info().title("springboot-microservice")
                         .version("v1").description("Demo project for keycloak integration as an authorisation server in a spring boot resource server and client with rbac and scopes authorisation based on spring security."))
                 .addSecurityItem(new SecurityRequirement().addList("keycloak",
-                        Arrays.asList("read")));
+                        List.of("read")));
     }
 }

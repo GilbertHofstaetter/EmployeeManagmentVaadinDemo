@@ -3,7 +3,6 @@ package com.gho.OAuth2ResourceServerClient.ui.view.company;
 import com.gho.OAuth2ResourceServerClient.obj.Company;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
 import com.gho.OAuth2ResourceServerClient.ui.MainUI;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Main;
@@ -14,7 +13,6 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -25,13 +23,12 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value="company", layout = MainUI.class)
+@Route(value = "company", layout = MainUI.class)
 public class CompanyView extends Main {
 
-    private CompanyRepository companyRepository;
     Grid<Company> grid;
-
     TextField filter;
+    private final CompanyRepository companyRepository;
 
     public CompanyView(CompanyRepository companyRepository) {
         setSizeFull();
@@ -99,7 +96,7 @@ public class CompanyView extends Main {
                         },
                         // Second callback fetches the total number of items currently in the Grid.
                         // The grid can then use it to properly adjust the scrollbars.
-                        query ->  (int) companyRepository.countByNameStartsWithIgnoreCase(filterText));
+                        query -> companyRepository.countByNameStartsWithIgnoreCase(filterText));
 
         return dataProvider;
     }

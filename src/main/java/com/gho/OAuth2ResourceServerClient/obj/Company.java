@@ -1,10 +1,12 @@
 package com.gho.OAuth2ResourceServerClient.obj;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -30,8 +32,8 @@ public class Company {
     private String name;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="company")
-    @JsonIgnoreProperties({"company" })
+    @OneToMany(mappedBy = "company")
+    @JsonIgnoreProperties({"company"})
     @EqualsAndHashCode.Exclude
     private Set<Employee> employees;
 

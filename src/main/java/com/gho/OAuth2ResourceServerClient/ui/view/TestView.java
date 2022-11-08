@@ -1,19 +1,16 @@
 package com.gho.OAuth2ResourceServerClient.ui.view;
 
 import com.gho.OAuth2ResourceServerClient.ui.MainUI;
-import com.vaadin.flow.component.*;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.IFrame;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import org.springframework.transaction.annotation.Transactional;
 
-@Route(value="test", layout = MainUI.class)
-@Transactional(/*readOnly = true*/)
+@Route(value = "test", layout = MainUI.class)
 public class TestView extends Main {
 
     private FeederThread thread;
@@ -21,25 +18,6 @@ public class TestView extends Main {
     public TestView() {
         VerticalLayout layout = new VerticalLayout();
         add(layout);
-
-        Button create = new Button("Create", VaadinIcon.CHECK.create());
-        create.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
-            @Override
-            public void onComponentEvent(ClickEvent<Button> buttonClickEvent) {
-                add(new Label("Test"));
-                //documentDialog.buildLayout();
-                //https://blog.frankel.ch/guide-lazyinitializationexception/
-                //var transaction = entityManager.getTransaction();
-                //transaction.begin();
-
-                //save();
-
-                //transaction.commit();
-            }
-        });
-
-        layout.add(create);
-
 
         IFrame iFrame = new IFrame("https://www.youtube.com/embed/dQw4w9WgXcQ");
         iFrame.setHeight("315px");

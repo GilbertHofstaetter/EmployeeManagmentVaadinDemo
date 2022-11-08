@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -57,7 +56,7 @@ public class SecurityConfig {
                 //https://vaadin.com/forum/thread/15871148/spring-security-vaadin-push
                 .antMatchers("/VAADIN/**", "/favicon.ico", "/robots.txt", "/manifest.webmanifest", "/sw.js",
                         "/offline.html", "/icons/**", "/images/**", "/styles/**", "/h2-console/**", "/sw-runtime-resources-precache.js",
-                        "/vaadinServlet/PUSH/**", "/vaadinServlet/HEARTBEAT/**" ).permitAll()
+                        "/vaadinServlet/PUSH/**", "/vaadinServlet/HEARTBEAT/**").permitAll()
                 .antMatchers("/ui/*").hasAnyRole("user", "admin")
                 .antMatchers(HttpMethod.GET, "/api/employee/list").hasAuthority("ROLE_user")
                 .antMatchers("/api/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAnyRole("admin")
@@ -68,7 +67,7 @@ public class SecurityConfig {
                 .jwt()
                 .jwtAuthenticationConverter(customJwtAuthenticationConverter());
         http.csrf().disable();
-       // http.cors().disable();
+        // http.cors().disable();
         http.logout()
                 .addLogoutHandler(keycloakLogoutHandler)
                 .logoutSuccessUrl("/loggedout")

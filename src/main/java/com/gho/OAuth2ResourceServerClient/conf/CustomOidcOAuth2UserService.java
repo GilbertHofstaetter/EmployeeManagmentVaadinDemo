@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,11 +23,10 @@ import java.util.stream.Stream;
 @Component
 public class CustomOidcOAuth2UserService extends OidcUserService {
 
-    @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
-    private String resourceId; //=client id
-
     @Autowired
     JwtDecoder jwtDecoderByJwkKeySetUri;
+    @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
+    private String resourceId; //=client id
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {

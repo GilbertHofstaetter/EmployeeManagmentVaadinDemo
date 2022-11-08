@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @ParentLayout(MainUI.class)
 public class ErrorView extends VerticalLayout implements HasErrorParameter<NotFoundException> {
 
-    private Span explanation;
+    private final Span explanation;
 
     public ErrorView() {
         H1 header = new H1("The view could not be found.");

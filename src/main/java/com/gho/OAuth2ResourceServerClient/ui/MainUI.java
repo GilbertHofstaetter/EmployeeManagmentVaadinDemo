@@ -68,14 +68,14 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
     }
 
     private RouterLink[] getRouterLinks() {
-        return new RouterLink[] {testView, companyView, employeeView};
+        return new RouterLink[]{testView, companyView, employeeView};
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         for (final RouterLink routerLink : getRouterLinks()) {
             if (routerLink.getHighlightCondition().shouldHighlight(routerLink, event)) {
-                pageTitle.setText(((Span)routerLink.getChildren().toArray()[1]).getText());
+                pageTitle.setText(((Span) routerLink.getChildren().toArray()[1]).getText());
             }
         }
     }
@@ -100,7 +100,7 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
     }
 
     private Anchor createAnchorMenuLink(String path,
-                                      String caption, Icon icon) {
+                                        String caption, Icon icon) {
         final Anchor anchorLink = new Anchor(path, "");
         anchorLink.setClassName("menu-link");
         anchorLink.add(icon);

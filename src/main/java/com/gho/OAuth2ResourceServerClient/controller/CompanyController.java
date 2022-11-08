@@ -2,8 +2,6 @@ package com.gho.OAuth2ResourceServerClient.controller;
 
 import com.gho.OAuth2ResourceServerClient.obj.Company;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

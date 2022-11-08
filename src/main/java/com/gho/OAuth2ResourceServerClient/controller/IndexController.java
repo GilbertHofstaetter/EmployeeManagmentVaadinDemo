@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -35,7 +34,8 @@ public class IndexController {
     }
 
     @GetMapping("/userOAuth2")
-    @PreAuthorize("hasAnyAuthority('ROLE_admin') AND hasAuthority('SCOPE_read')") //only in combination with client login
+    @PreAuthorize("hasAnyAuthority('ROLE_admin') AND hasAuthority('SCOPE_read')")
+    //only in combination with client login
     public OAuth2AuthenticationToken userOAuth2() {
         OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         OAuth2User user = authentication.getPrincipal();

@@ -23,14 +23,12 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value="employee", layout = MainUI.class)
+@Route(value = "employee", layout = MainUI.class)
 public class EmployeeView extends Main {
 
-    private EmployeeRepository employeeRepository;
-
     Grid<Employee> grid;
-
     TextField filter;
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeView(EmployeeRepository employeeRepository) {
         setSizeFull();
@@ -123,7 +121,7 @@ public class EmployeeView extends Main {
                         },
                         // Second callback fetches the total number of items currently in the Grid.
                         // The grid can then use it to properly adjust the scrollbars.
-                        query ->  (int) employeeRepository.countByLastNameStartsWithIgnoreCase(filterText));
+                        query -> employeeRepository.countByLastNameStartsWithIgnoreCase(filterText));
 
         return dataProvider;
     }
