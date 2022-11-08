@@ -1,6 +1,8 @@
 package com.gho.OAuth2ResourceServerClient.ui;
 
 import com.gho.OAuth2ResourceServerClient.ui.view.TestView;
+import com.gho.OAuth2ResourceServerClient.ui.view.company.CompanyView;
+import com.gho.OAuth2ResourceServerClient.ui.view.employee.EmployeeView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -22,14 +24,21 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
 
     private final RouterLink testView;
 
+    private final RouterLink employeeView;
+
+    private final RouterLink companyView;
+
     private final Anchor swagger;
 
     public MainUI() {
         // Navigation
-        testView = createMenuLink(TestView.class, "Test", VaadinIcon.EDIT.create());//new RouterLink("Test", TestView.class);
-        swagger = createAnchorMenuLink("/swagger-ui.html", "Swagger-ui", VaadinIcon.ANCHOR.create()); //new Anchor("/swagger-ui.html", "Swagger");
+        testView = createMenuLink(TestView.class, "Test", VaadinIcon.EDIT.create());
+        swagger = createAnchorMenuLink("/swagger-ui.html", "Swagger-ui", VaadinIcon.ANCHOR.create());
+        employeeView = createMenuLink(EmployeeView.class, "Employee", VaadinIcon.EDIT.create());
+        companyView = createMenuLink(CompanyView.class, "Company", VaadinIcon.EDIT.create());
 
-        final UnorderedList list = new UnorderedList( new ListItem(testView), new ListItem(swagger));
+
+        final UnorderedList list = new UnorderedList(new ListItem(testView), new ListItem(swagger), new ListItem(employeeView), new ListItem(companyView));
         final Nav navigation = new Nav(list);
         addToDrawer(navigation);
         setPrimarySection(Section.NAVBAR);
@@ -59,7 +68,7 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
     }
 
     private RouterLink[] getRouterLinks() {
-        return new RouterLink[] { /*home,*/ testView/*, broadcast*/};
+        return new RouterLink[] {testView, companyView, employeeView};
     }
 
     @Override

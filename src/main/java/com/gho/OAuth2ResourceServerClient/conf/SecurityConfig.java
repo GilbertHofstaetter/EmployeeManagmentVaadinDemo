@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .jwt()
                 .jwtAuthenticationConverter(customJwtAuthenticationConverter());
         http.csrf().disable();
-        http.cors().disable();
+       // http.cors().disable();
         http.logout()
                 .addLogoutHandler(keycloakLogoutHandler)
                 .logoutSuccessUrl("/loggedout")
@@ -104,7 +104,6 @@ public class SecurityConfig {
 
                     try {
                         JWT jwt = JWTParser.parse(idToken.getTokenValue());
-                        System.out.println(jwt);
                     } catch (Exception e) {
 
                     }
