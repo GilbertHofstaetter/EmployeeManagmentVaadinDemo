@@ -21,5 +21,7 @@ Vaadin (v23) has been added as web front end.
 
 * http://localhost:8080/ui
 
+![Employee in Vaadin](https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client-vaadin/blob/main/Employee_Vaadin.png)
+
 **See Turorial.pdf for further infos.**
 
