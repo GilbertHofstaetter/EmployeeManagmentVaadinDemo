@@ -5,6 +5,10 @@ This demo project is based on spring-boot-oauth2-resource-server-client (https:/
 
 Vaadin (v23) has been added as web front end.
 
+**Build project**
+
+* mvn clean install -P production
+
 **Endpoints**
 
 * http://localhost:8080/api/customer/list
@@ -21,7 +25,7 @@ Vaadin (v23) has been added as web front end.
 
 * http://localhost:8080/ui
 
-![Employee in Vaadin](https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client-vaadin/blob/main/Employee_Vaadin.png)
+![List Employee in Vaadin](https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client-vaadin/blob/main/Employee_Vaadin.png)
 
 **See Turorial.pdf for further infos.**
 

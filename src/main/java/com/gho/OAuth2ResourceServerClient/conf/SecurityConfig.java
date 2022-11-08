@@ -54,7 +54,8 @@ public class SecurityConfig {
         http.cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/VAADIN/**", "/favicon.ico", "/robots.txt", "/manifest.webmanifest", "/sw.js",
+                        "/offline.html", "/icons/**", "/images/**", "/styles/**", "/h2-console/**", "/sw-runtime-resources-precache.js" ).permitAll()
                 .antMatchers("/ui/*").hasAnyRole("user", "admin")
                 .antMatchers(HttpMethod.GET, "/api/employee/list").hasAuthority("ROLE_user")
                 .antMatchers("/api/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAnyRole("admin")
