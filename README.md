@@ -1,4 +1,4 @@
-# Vaadin + Keycloak
+# Vaadin + Keycloak + Docker
 # spring-boot-oauth2-resource-server-client-vaadin
 Demo project for a combination of Vaadin and Keycloak.
 This demo project is based on spring-boot-oauth2-resource-server-client (https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client)
