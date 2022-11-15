@@ -28,11 +28,6 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
     }
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
     public CommandLineRunner loadData(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         return (args) -> {
             Employee employee0 = new Employee();
@@ -74,6 +69,7 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             employee2.setCompany(company);
             employeeRepository.save(employee2);
 
+            //keycloakService.createClient();
         };
     }
 

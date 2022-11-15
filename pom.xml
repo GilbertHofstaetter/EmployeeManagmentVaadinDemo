@@ -76,6 +76,11 @@
             <version>${springdoc-openapi.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>20.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -101,7 +106,47 @@
 
     <profiles>
         <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <keycloak.host>localhost</keycloak.host>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker-keycloak</id>
+            <properties>
+                <keycloak.host>keycloak</keycloak.host>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-maven-plugin</artifactId>
+                        <version>${vaadin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>frontend</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>prepare-frontend</goal>
+                                    <goal>build-frontend</goal>
+                                </goals>
+                                <configuration>
+                                    <productionMode>true</productionMode>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>production</id>
+            <properties>
+                <keycloak.host>localhost</keycloak.host>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
