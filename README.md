@@ -5,6 +5,9 @@ This demo project is based on spring-boot-oauth2-resource-server-client (https:/
 
 Vaadin (v23) has been added as web front end.
 
+**See Turorial.pdf for further infos.** \
+**See Turorial Docker setup.pdf for further infos about running the project with Docker.**
+
 **Build project**
 
 * mvn clean install -P production
@@ -27,5 +30,4 @@ Vaadin (v23) has been added as web front end.
 
 ![List Employee in Vaadin](https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client-vaadin/blob/main/Employee_Vaadin.png)
 
-**See Turorial.pdf for further infos.**
 
