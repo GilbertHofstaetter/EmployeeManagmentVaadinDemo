@@ -1,6 +1,7 @@
 package com.gho.OAuth2ResourceServerClient.obj;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -41,5 +42,10 @@ public class Employee {
     @JoinColumn(name = "company_id", nullable = true)
     @JsonIgnoreProperties({"employees"})
     private Company company;
+
+    @OneToOne
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    private Picture picture;
 
 }

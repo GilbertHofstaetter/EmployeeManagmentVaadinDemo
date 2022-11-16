@@ -2,10 +2,14 @@ package com.gho.OAuth2ResourceServerClient;
 
 import com.gho.OAuth2ResourceServerClient.obj.Company;
 import com.gho.OAuth2ResourceServerClient.obj.Employee;
+import com.gho.OAuth2ResourceServerClient.obj.Picture;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
 import com.gho.OAuth2ResourceServerClient.repository.EmployeeRepository;
+import com.gho.OAuth2ResourceServerClient.repository.PictureRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +32,7 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
     }
 
     @Bean
-    public CommandLineRunner loadData(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
+    public CommandLineRunner loadData(EmployeeRepository employeeRepository, CompanyRepository companyRepository, PictureRepository pictureRepository, SessionFactory sessionFactory) {
         return (args) -> {
             Employee employee0 = new Employee();
             employee0.setFirstName("Max0");
@@ -37,6 +41,14 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             employee0.setEmail("m0.m0@company.com");
             employee0 = employeeRepository.save(employee0);
 
+            Picture picture0 = new Picture();
+            picture0 = pictureRepository.save(picture0);
+            Session session = sessionFactory.openSession();
+            session.update(employee0);
+            employee0.setPicture(picture0);
+            employee0 = employeeRepository.save(employee0);
+            session.close();
+
             Employee employee1 = new Employee();
             employee1.setFirstName("Max1");
             employee1.setLastName("Mustermann1");
@@ -44,12 +56,28 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             employee1.setEmail("m1.m1@company.com");
             employee1 = employeeRepository.save(employee1);
 
+            Picture picture1 = new Picture();
+            picture1 = pictureRepository.save(picture1);
+            session = sessionFactory.openSession();
+            session.update(employee1);
+            employee1.setPicture(picture1);
+            employee1 = employeeRepository.save(employee1);
+            session.close();
+
             Employee employee2 = new Employee();
             employee2.setFirstName("Max2");
             employee2.setLastName("Mustermann2");
             employee2.setBirthDate(new Date());
             employee2.setEmail("m2.m2@company.com");
             employee2 = employeeRepository.save(employee2);
+
+            Picture picture2 = new Picture();
+            picture2 = pictureRepository.save(picture2);
+            session = sessionFactory.openSession();
+            session.update(employee2);
+            employee2.setPicture(picture2);
+            employee2 = employeeRepository.save(employee2);
+            session.close();
 
             Company company = new Company();
             company.setName("Company");

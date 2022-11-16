@@ -1,11 +1,23 @@
 package com.gho.OAuth2ResourceServerClient.ui.view.company;
 
 import com.gho.OAuth2ResourceServerClient.obj.Company;
+import com.gho.OAuth2ResourceServerClient.obj.Employee;
+import com.gho.OAuth2ResourceServerClient.obj.Picture;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
+import com.gho.OAuth2ResourceServerClient.repository.EmployeeRepository;
+import com.gho.OAuth2ResourceServerClient.service.CompanyService;
 import com.gho.OAuth2ResourceServerClient.ui.MainUI;
+import com.gho.OAuth2ResourceServerClient.ui.view.employee.EmployeeEditorView;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,14 +25,20 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Route(value = "company", layout = MainUI.class)
@@ -30,17 +48,22 @@ public class CompanyView extends Main {
     TextField filter;
     private final CompanyRepository companyRepository;
 
-    public CompanyView(CompanyRepository companyRepository) {
+    private final CompanyService companyService;
+
+    public CompanyView(CompanyRepository companyRepository, CompanyService companyService) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         add(layout);
 
+        this.companyService = companyService;
         this.companyRepository = companyRepository;
         this.grid = new Grid<>(Company.class);
         grid.setSizeFull();
         grid.setColumns("id", "name");
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
+
+        addEditDeleteButton();
 
         this.filter = new TextField();
         HorizontalLayout actions = new HorizontalLayout(filter);
@@ -48,17 +71,53 @@ public class CompanyView extends Main {
         filter.setPlaceholder("Filter by last name");
 
         filter.setValueChangeMode(ValueChangeMode.EAGER);
-        filter.addValueChangeListener(e -> listCompanies(e.getValue()));
+        filter.addValueChangeListener(e -> dataToUI(e.getValue()));
 
-        listCompanies(null);
+        dataToUI(null);
     }
 
-    void listCompanies(String filterText) {
+    void dataToUI(String filterText) {
         if (StringUtils.isEmpty(filterText)) {
             filterText = "";
         }
         grid.setItems(getCompanyDataProvider(filterText));
     }
+
+    private void addEditDeleteButton() {
+        grid.addComponentColumn(company -> {
+            HorizontalLayout editCreateButtonLayout = new HorizontalLayout();
+            editCreateButtonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+
+            Button editButton = new Button(
+                    VaadinIcon.EDIT.create(), event -> {
+                edit(company);
+            });
+            editButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+            Button deleteButton = new Button(
+                    VaadinIcon.DEL.create(), event -> {
+                delete(company);
+            });
+            deleteButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+            editCreateButtonLayout.add(editButton, deleteButton);
+            return editCreateButtonLayout;
+        } );
+    }
+
+    private void delete(Company company) {
+        try {
+            companyService.delete(company);
+            Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
+            dataToUI(filter.getValue());
+        } catch (Exception e) {
+            Notification.show("Deletion not possible.", 5000, Notification.Position.TOP_END);
+        }
+    }
+
+    private void edit(Company company) {
+        QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(company.getId())));
+        UI.getCurrent().navigate(EmployeeEditorView.class, params);
+    }
+
 
     DataProvider<Company, Void> getCompanyDataProvider(String filterText) {
 

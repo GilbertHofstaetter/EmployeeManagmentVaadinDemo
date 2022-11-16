@@ -7,7 +7,6 @@ RUN mkdir /app
 WORKDIR /app
 COPY . /app
 RUN rm -r -f /app/node_modules
-RUN rm -r -f /app/frontend
 RUN mvn -q clean install -DskipTests -P docker-keycloak
 WORKDIR /app/target
 CMD "java" "-jar" "spring-boot-oauth2-resource-server-client-1.0-SNAPSHOT.jar"
