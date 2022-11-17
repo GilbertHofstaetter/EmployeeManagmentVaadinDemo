@@ -37,5 +37,12 @@ public class Company {
     @EqualsAndHashCode.Exclude
     private Set<Employee> employees;
 
+    @ToString.Exclude
+    @OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "company_id")
+    @JsonIgnoreProperties({"document"})
+    @EqualsAndHashCode.Exclude
+    private Set<Document> documents;
+
 
 }

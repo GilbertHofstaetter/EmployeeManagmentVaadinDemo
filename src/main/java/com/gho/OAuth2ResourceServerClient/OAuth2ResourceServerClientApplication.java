@@ -1,9 +1,11 @@
 package com.gho.OAuth2ResourceServerClient;
 
 import com.gho.OAuth2ResourceServerClient.obj.Company;
+import com.gho.OAuth2ResourceServerClient.obj.Document;
 import com.gho.OAuth2ResourceServerClient.obj.Employee;
 import com.gho.OAuth2ResourceServerClient.obj.Picture;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
+import com.gho.OAuth2ResourceServerClient.repository.DocumentRepository;
 import com.gho.OAuth2ResourceServerClient.repository.EmployeeRepository;
 import com.gho.OAuth2ResourceServerClient.repository.PictureRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
@@ -15,6 +17,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
@@ -25,6 +28,7 @@ import java.util.HashSet;
 //https://stackoverflow.com/questions/58205510/spring-security-mapping-oauth2-claims-with-roles-to-secure-resource-server-endp
 @Push
 @SpringBootApplication
+@ComponentScan({"com.gho.OAuth2ResourceServerClient"})
 public class OAuth2ResourceServerClientApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(String[] args) {
@@ -32,7 +36,7 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
     }
 
     @Bean
-    public CommandLineRunner loadData(EmployeeRepository employeeRepository, CompanyRepository companyRepository, PictureRepository pictureRepository, SessionFactory sessionFactory) {
+    public CommandLineRunner loadData(EmployeeRepository employeeRepository, CompanyRepository companyRepository, PictureRepository pictureRepository, DocumentRepository documentRepository, SessionFactory sessionFactory) {
         return (args) -> {
             Employee employee0 = new Employee();
             employee0.setFirstName("Max0");
@@ -46,6 +50,9 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             Session session = sessionFactory.openSession();
             session.update(employee0);
             employee0.setPicture(picture0);
+            employee0.setDocuments(new HashSet<Document>());
+            Document document0 = documentRepository.save(new Document());
+            employee0.getDocuments().add(document0);
             employee0 = employeeRepository.save(employee0);
             session.close();
 
@@ -61,6 +68,9 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             session = sessionFactory.openSession();
             session.update(employee1);
             employee1.setPicture(picture1);
+            employee1.setDocuments(new HashSet<Document>());
+            Document document1 = documentRepository.save(new Document());
+            employee1.getDocuments().add(document1);
             employee1 = employeeRepository.save(employee1);
             session.close();
 
@@ -76,6 +86,9 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             session = sessionFactory.openSession();
             session.update(employee2);
             employee2.setPicture(picture2);
+            employee2.setDocuments(new HashSet<Document>());
+            Document document2 = documentRepository.save(new Document());
+            employee2.getDocuments().add(document2);
             employee2 = employeeRepository.save(employee2);
             session.close();
 
@@ -86,6 +99,9 @@ public class OAuth2ResourceServerClientApplication extends SpringBootServletInit
             company.getEmployees().add(employee0);
             company.getEmployees().add(employee1);
             company.getEmployees().add(employee2);
+            company.setDocuments(new HashSet<Document>());
+            Document document3 = documentRepository.save(new Document());
+            company.getDocuments().add(document3);
             company = companyRepository.save(company);
 
             employee0.setCompany(company);
