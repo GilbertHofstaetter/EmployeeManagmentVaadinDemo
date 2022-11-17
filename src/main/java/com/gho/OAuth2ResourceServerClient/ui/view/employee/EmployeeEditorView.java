@@ -39,14 +39,14 @@ public class EmployeeEditorView extends Main implements HasUrlParameter<String> 
         } catch (Exception e) {}
     }
 
-    private void load(Long id) {
+    protected void load(Long id) {
         Optional<Employee> employeeOpt = employeeRepository.findById(id);
         if (!employeeOpt.isEmpty()) {
             employee = employeeOpt.get();
             dataToUi();
         }
     }
-    private void dataToUi() {
+    protected void dataToUi() {
        // employeeForm.setEmployee(employee);
        // pictureForm.dataToUi();
     }

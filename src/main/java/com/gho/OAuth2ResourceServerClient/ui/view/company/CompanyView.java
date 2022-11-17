@@ -14,6 +14,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -31,6 +32,7 @@ import com.vaadin.flow.server.StreamResource;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +52,9 @@ public class CompanyView extends Main {
 
     private final CompanyService companyService;
 
-    public CompanyView(CompanyRepository companyRepository, CompanyService companyService) {
+    private final SessionFactory sessionFactory;
+
+    public CompanyView(CompanyRepository companyRepository, CompanyService companyService, SessionFactory sessionFactory) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
@@ -58,17 +62,19 @@ public class CompanyView extends Main {
 
         this.companyService = companyService;
         this.companyRepository = companyRepository;
+        this.sessionFactory = sessionFactory;
         this.grid = new Grid<>(Company.class);
         grid.setSizeFull();
         grid.setColumns("id", "name");
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
+        addCountEmployeesColumn();
         addEditDeleteButton();
 
         this.filter = new TextField();
         HorizontalLayout actions = new HorizontalLayout(filter);
         layout.addAndExpand(actions, grid);
-        filter.setPlaceholder("Filter by last name");
+        filter.setPlaceholder("Filter by name");
 
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(e -> dataToUI(e.getValue()));
@@ -81,6 +87,17 @@ public class CompanyView extends Main {
             filterText = "";
         }
         grid.setItems(getCompanyDataProvider(filterText));
+    }
+
+    private void addCountEmployeesColumn() {
+        grid.addComponentColumn(company -> {
+            Label employeeCounter = new Label("");
+            Session session = sessionFactory.openSession();
+            session.update(company);
+            employeeCounter.setText(Integer.toString(company.getEmployees().size()));
+            session.close();
+            return employeeCounter;
+        }).setHeader("Employee counter");
     }
 
     private void addEditDeleteButton() {
@@ -100,7 +117,7 @@ public class CompanyView extends Main {
             deleteButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
             editCreateButtonLayout.add(editButton, deleteButton);
             return editCreateButtonLayout;
-        } );
+        });
     }
 
     private void delete(Company company) {
@@ -115,7 +132,7 @@ public class CompanyView extends Main {
 
     private void edit(Company company) {
         QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(company.getId())));
-        UI.getCurrent().navigate(EmployeeEditorView.class, params);
+        UI.getCurrent().navigate(CompanyEditorView.class, params);
     }
 
 
