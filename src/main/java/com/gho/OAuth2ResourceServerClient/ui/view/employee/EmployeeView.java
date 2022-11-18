@@ -31,6 +31,8 @@ import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +52,9 @@ public class EmployeeView extends Main {
 
     private final EmployeeService employeeService;
 
-    public EmployeeView(EmployeeRepository employeeRepository, EmployeeService employeeService) {
+    private final SessionFactory sessionFactory;
+
+    public EmployeeView(EmployeeRepository employeeRepository, EmployeeService employeeService, SessionFactory sessionFactory) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
@@ -58,12 +62,14 @@ public class EmployeeView extends Main {
 
         this.employeeRepository = employeeRepository;
         this.employeeService = employeeService;
+        this.sessionFactory = sessionFactory;
         this.grid = new Grid<>(Employee.class);
         grid.setSizeFull();
         grid.setColumns("id", "firstName", "lastName", "email", "birthDate");
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
         addCompanyColumn();
+        addCountDocumentsColumn();
         addImageColumn();
         addEditDeleteButton();
 
@@ -108,6 +114,17 @@ public class EmployeeView extends Main {
             }
             return companyLabel;
         }).setHeader("Company");
+    }
+
+    private void addCountDocumentsColumn() {
+        grid.addComponentColumn(employee -> {
+            Label documentsCounter = new Label("");
+            Session session = sessionFactory.openSession();
+            session.update(employee);
+            documentsCounter.setText(Integer.toString(employee.getDocuments().size()));
+            session.close();
+            return documentsCounter;
+        }).setHeader("Documents counter");
     }
 
     private void addEditDeleteButton() {

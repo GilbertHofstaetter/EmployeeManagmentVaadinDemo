@@ -70,6 +70,7 @@ public class CompanyView extends Main {
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
         addCountEmployeesColumn();
+        addCountDocumentsColumn();
         addEditDeleteButton();
 
         this.filter = new TextField();
@@ -99,6 +100,17 @@ public class CompanyView extends Main {
             session.close();
             return employeeCounter;
         }).setHeader("Employee counter");
+    }
+
+    private void addCountDocumentsColumn() {
+        grid.addComponentColumn(company -> {
+            Label documentsCounter = new Label("");
+            Session session = sessionFactory.openSession();
+            session.update(company);
+            documentsCounter.setText(Integer.toString(company.getDocuments().size()));
+            session.close();
+            return documentsCounter;
+        }).setHeader("Documents counter");
     }
 
     private void addEditDeleteButton() {

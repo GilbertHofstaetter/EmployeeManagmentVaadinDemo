@@ -19,7 +19,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <vaadin.version>23.2.6</vaadin.version>
+        <vaadin.version>23.2.8</vaadin.version>
         <springdoc-openapi.version>1.6.11</springdoc-openapi.version>
     </properties>
 

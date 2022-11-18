@@ -10,4 +10,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Page<Employee> findByLastNameStartsWithIgnoreCase(String lastName, Pageable pageable);
 
     int countByLastNameStartsWithIgnoreCase(String lastName);
+
+    Page<Employee> findByCompanyId(long id, Pageable pageable);
+
+    int countByCompanyId(long id);
+
 }

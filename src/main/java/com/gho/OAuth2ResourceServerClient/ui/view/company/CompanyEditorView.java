@@ -3,15 +3,25 @@ package com.gho.OAuth2ResourceServerClient.ui.view.company;
 import com.gho.OAuth2ResourceServerClient.obj.Company;
 import com.gho.OAuth2ResourceServerClient.repository.CompanyRepository;
 import com.gho.OAuth2ResourceServerClient.ui.MainUI;
+import com.gho.OAuth2ResourceServerClient.ui.view.company.components.CompanyForm;
+import com.gho.OAuth2ResourceServerClient.ui.view.company.components.DocumentForm;
+import com.gho.OAuth2ResourceServerClient.ui.view.company.components.EmployeeForm;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.TabVariant;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,9 +33,15 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
 
     private Company company;
 
-    private CompanyForm companyForm;
+    private final CompanyForm companyForm;
 
-    public CompanyEditorView(CompanyRepository companyRepository) {
+    private final EmployeeForm employeeForm;
+
+    private final DocumentForm documentForm;
+
+    protected Map<Tab, Component> tabSelector = new HashMap<>();
+
+    public CompanyEditorView(CompanyRepository companyRepository, CompanyForm companyForm, EmployeeForm companyEmployeeForm) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
@@ -43,9 +59,39 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
             save();
         });
 
-        companyForm = new CompanyForm();
-        layout.add(companyForm);
+        this.companyForm = companyForm;
+        this.employeeForm = companyEmployeeForm;
+        this.documentForm = new DocumentForm();
 
+        addTabs(layout);
+        tabSelector.values().forEach(component -> component.setVisible(false));
+
+        layout.add(companyForm);
+        layout.add(employeeForm);
+        layout.add(documentForm);
+        companyForm.setVisible(true);
+    }
+
+    protected void addTabs(VerticalLayout layout) {
+        Tab general = new Tab(VaadinIcon.USER.create(), new Span("General"));
+        tabSelector.put(general, companyForm);
+        Tab employees = new Tab(VaadinIcon.COG.create(), new Span("Employees"));
+        tabSelector.put(employees, employeeForm);
+        Tab documents = new Tab(VaadinIcon.BELL.create(),new Span("Documents"));
+        tabSelector.put(documents, documentForm);
+
+        for (Tab tab : new Tab[] { general, employees, documents }) {
+            tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        }
+
+        Tabs tabs = new Tabs(general, employees, documents);
+
+        layout.add(tabs);
+        tabs.addSelectedChangeListener(listener -> {
+            Tab selected = listener.getSelectedTab();
+            tabSelector.values().forEach(component -> component.setVisible(false));
+            tabSelector.get(selected).setVisible(true);
+        });
     }
 
     @Override
@@ -83,32 +129,9 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
 
     protected void dataToUi() {
         companyForm.setCompany(company);
-       // employeeGrid.setItems(employeeRepository.findByCompanyId(company.getId()));
+        employeeForm.setCompany(company);
+
     }
 
-    public class CompanyForm extends FormLayout {
-        private Company company;
 
-        TextField id = new TextField();
-
-        TextField name = new TextField();
-
-        Binder<Company> binder = new BeanValidationBinder<>(Company.class);
-
-        public CompanyForm() {
-            add(id, name);
-            id.setReadOnly(true);
-            addClassName("contact-form");
-            binder.bindInstanceFields(this);
-        }
-
-        public void setCompany(Company company) {
-            this.company = company;
-            binder.setBean(company);
-        }
-
-        public Binder<Company> getBinder() {
-            return  binder;
-        }
-    }
 }
