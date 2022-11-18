@@ -11,6 +11,7 @@ import com.gho.OAuth2ResourceServerClient.ui.view.employee.EmployeeEditorView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Image;
@@ -122,9 +123,18 @@ public class CompanyView extends Main {
 
     private void delete(Company company) {
         try {
-            companyService.delete(company);
-            Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
-            dataToUI(filter.getValue());
+            ConfirmDialog confirmDeleteDialog = new ConfirmDialog();
+            confirmDeleteDialog.setHeader("Delete Employee");
+            confirmDeleteDialog.setText("Are you sure?");
+            confirmDeleteDialog.setCancelText("Cancel");
+            confirmDeleteDialog.setCancelable(true);
+            confirmDeleteDialog.setConfirmText("Delete");
+            confirmDeleteDialog.addConfirmListener(listener -> {
+                companyService.delete(company);
+                Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
+                dataToUI(filter.getValue());
+            });
+            confirmDeleteDialog.open();
         } catch (Exception e) {
             Notification.show("Deletion not possible.", 5000, Notification.Position.TOP_END);
         }

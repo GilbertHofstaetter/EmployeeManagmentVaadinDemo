@@ -5,11 +5,13 @@ import com.gho.OAuth2ResourceServerClient.obj.Employee;
 import com.gho.OAuth2ResourceServerClient.obj.Picture;
 import com.gho.OAuth2ResourceServerClient.repository.EmployeeRepository;
 import com.gho.OAuth2ResourceServerClient.repository.PictureRepository;
+import com.gho.OAuth2ResourceServerClient.service.EmployeeService;
 import com.gho.OAuth2ResourceServerClient.ui.MainUI;
 import com.gho.OAuth2ResourceServerClient.ui.components.ImageNotification;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Image;
@@ -46,16 +48,16 @@ public class EmployeeView extends Main {
     TextField filter;
     private final EmployeeRepository employeeRepository;
 
-    private final PictureRepository pictureRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeView(EmployeeRepository employeeRepository, PictureRepository pictureRepository) {
+    public EmployeeView(EmployeeRepository employeeRepository, EmployeeService employeeService) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         add(layout);
 
         this.employeeRepository = employeeRepository;
-        this.pictureRepository = pictureRepository;
+        this.employeeService = employeeService;
         this.grid = new Grid<>(Employee.class);
         grid.setSizeFull();
         grid.setColumns("id", "firstName", "lastName", "email", "birthDate");
@@ -130,12 +132,18 @@ public class EmployeeView extends Main {
 
     private void delete(Employee employee) {
         try {
-            Picture picture = employee.getPicture();
-            employeeRepository.delete(employee);
-            if (picture != null)
-                pictureRepository.delete(picture);
-            Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
-            dataToUI(filter.getValue());
+            ConfirmDialog confirmDeleteDialog = new ConfirmDialog();
+            confirmDeleteDialog.setHeader("Delete Employee");
+            confirmDeleteDialog.setText("Are you sure?");
+            confirmDeleteDialog.setCancelText("Cancel");
+            confirmDeleteDialog.setCancelable(true);
+            confirmDeleteDialog.setConfirmText("Delete");
+            confirmDeleteDialog.addConfirmListener(listener -> {
+                employeeService.delete(employee);
+                Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
+                dataToUI(filter.getValue());
+            });
+            confirmDeleteDialog.open();
         } catch (Exception e) {
             Notification.show("Deletion not possible.", 5000, Notification.Position.TOP_END);
         }
