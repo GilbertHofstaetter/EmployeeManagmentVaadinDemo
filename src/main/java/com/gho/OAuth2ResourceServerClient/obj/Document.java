@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -34,5 +36,17 @@ public class Document {
     @Column(name = "document")
     @JsonIgnore
     private byte[] document;
+
+    @ManyToOne
+    @ToString.Exclude
+    @JsonIgnoreProperties({"picture", "documents", "company"})
+    @EqualsAndHashCode.Exclude
+    private Employee employee;
+
+    @ManyToOne
+    @ToString.Exclude
+    @JsonIgnoreProperties({"documents", "employees"})
+    @EqualsAndHashCode.Exclude
+    private Company company;
 
 }

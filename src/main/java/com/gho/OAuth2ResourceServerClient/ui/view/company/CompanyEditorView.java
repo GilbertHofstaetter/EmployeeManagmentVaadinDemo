@@ -38,7 +38,7 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
 
     protected Map<Tab, Component> tabSelector = new HashMap<>();
 
-    public CompanyEditorView(CompanyRepository companyRepository, CompanyForm companyForm, EmployeeForm companyEmployeeForm) {
+    public CompanyEditorView(CompanyRepository companyRepository, CompanyForm companyForm, EmployeeForm companyEmployeeForm, DocumentForm documentForm) {
         setSizeFull();
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
@@ -58,7 +58,7 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
 
         this.companyForm = companyForm;
         this.employeeForm = companyEmployeeForm;
-        this.documentForm = new DocumentForm();
+        this.documentForm = documentForm;
 
         addTabs(layout);
         tabSelector.values().forEach(component -> component.setVisible(false));
@@ -127,8 +127,7 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
     protected void dataToUi() {
         companyForm.setCompany(company);
         employeeForm.setCompany(company);
-
+        documentForm.setCompany(company);
     }
-
 
 }
