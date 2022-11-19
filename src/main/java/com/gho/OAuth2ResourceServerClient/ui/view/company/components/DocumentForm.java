@@ -4,16 +4,20 @@ import com.gho.OAuth2ResourceServerClient.obj.Company;
 import com.gho.OAuth2ResourceServerClient.obj.Document;
 import com.gho.OAuth2ResourceServerClient.obj.Employee;
 import com.gho.OAuth2ResourceServerClient.repository.DocumentRepository;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.AllFinishedEvent;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
@@ -33,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("companyDocumentForm")
-public class DocumentForm extends VerticalLayout {
+public class DocumentForm extends VerticalLayout implements ComponentEventListener<AllFinishedEvent> {
 
     protected Company company;
 
@@ -46,6 +50,14 @@ public class DocumentForm extends VerticalLayout {
     public DocumentForm(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
         setSizeFull();
+
+        Button addDocumentButton = new Button(
+                VaadinIcon.UPLOAD.create(), event -> {
+            DocumentUploadDialog documentUploadDialog = new DocumentUploadDialog(documentRepository);
+            documentUploadDialog.registerActionListener(this);
+            documentUploadDialog.open(company);
+        });
+        add(addDocumentButton);
 
         this.documentGrid = new Grid<>(Document.class);
         documentGrid.setSizeFull();
@@ -85,15 +97,40 @@ public class DocumentForm extends VerticalLayout {
                 openDocument(document);
             });
             editButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-            editCreateButtonLayout.add(editButton);
+            Button deleteButton = new Button(
+                    VaadinIcon.DEL.create(), event -> {
+                delete(document);
+            });
+            deleteButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+            editCreateButtonLayout.add(editButton, deleteButton);
             return editCreateButtonLayout;
         } );
+    }
+
+    protected void delete(Document document) {
+        ConfirmDialog confirmDeleteDialog = new ConfirmDialog();
+        confirmDeleteDialog.setHeader("Delete Document");
+        confirmDeleteDialog.setText("Are you sure?");
+        confirmDeleteDialog.setCancelText("Cancel");
+        confirmDeleteDialog.setCancelable(true);
+        confirmDeleteDialog.setConfirmText("Delete");
+        confirmDeleteDialog.addConfirmListener(listener -> {
+            documentRepository.delete(document);
+            Notification.show("Deleted.", 5000, Notification.Position.TOP_END);
+            dataToUI(null);
+        });
+        confirmDeleteDialog.open();
     }
 
     protected void openDocument(Document document) {
         StreamResource resource = new StreamResource(document.getFileName() != null ? document.getFileName() : "", () -> new ByteArrayInputStream(document.getDocument()));
         StreamRegistration registration = VaadinSession.getCurrent().getResourceRegistry().registerResource(resource);
         UI.getCurrent().getPage().open(registration.getResourceUri().toString(), document.getFileName());
+    }
+
+    @Override
+    public void onComponentEvent(AllFinishedEvent allFinishedEvent) {
+        dataToUI(null);
     }
 
     DataProvider<Document, Void> getDocumentDataProvider(long id, String filterText) {

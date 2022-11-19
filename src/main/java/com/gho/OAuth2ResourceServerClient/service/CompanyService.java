@@ -32,11 +32,11 @@ public class CompanyService {
             });
 
             companyRepository.delete(company);
-            if (company.getDocuments() != null) {
-                company.getDocuments().forEach(document -> {
-                    documentRepository.delete(document);
-                });
-            }
+//            if (company.getDocuments() != null) {
+//                company.getDocuments().forEach(document -> {
+//                    documentRepository.delete(document);
+//                });
+//            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

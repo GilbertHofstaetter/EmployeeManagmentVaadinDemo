@@ -31,11 +31,11 @@ public class EmployeeService {
             employeeRepository.delete(employee);
             if (picture != null)
                 pictureRepository.delete(picture);
-            if (employee.getDocuments() != null) {
-                employee.getDocuments().forEach(document -> {
-                    documentRepository.delete(document);
-                });
-            }
+//            if (employee.getDocuments() != null) {
+//                employee.getDocuments().forEach(document -> {
+//                    documentRepository.delete(document);
+//                });
+//            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
