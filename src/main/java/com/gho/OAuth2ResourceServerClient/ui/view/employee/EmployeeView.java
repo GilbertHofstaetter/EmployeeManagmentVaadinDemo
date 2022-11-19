@@ -46,8 +46,9 @@ import java.util.List;
 @Route(value = "employee", layout = MainUI.class)
 public class EmployeeView extends Main {
 
-    Grid<Employee> grid;
-    TextField filter;
+    protected Grid<Employee> grid;
+
+    protected TextField filter;
     private final EmployeeRepository employeeRepository;
 
     private final EmployeeService employeeService;
