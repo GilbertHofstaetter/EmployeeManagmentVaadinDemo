@@ -48,7 +48,9 @@ import java.util.List;
 public class CompanyView extends Main {
 
     Grid<Company> grid;
-    TextField filter;
+
+    private Button createButton;
+    private TextField filter;
     private final CompanyRepository companyRepository;
 
     private final CompanyService companyService;
@@ -73,6 +75,9 @@ public class CompanyView extends Main {
         addCountDocumentsColumn();
         addEditDeleteButton();
 
+        createButton = new Button(VaadinIcon.FILE.create(),event -> {
+            create();
+        });
         this.filter = new TextField();
         HorizontalLayout actions = new HorizontalLayout(filter);
         layout.addAndExpand(actions, grid);
@@ -154,6 +159,11 @@ public class CompanyView extends Main {
 
     private void edit(Company company) {
         QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(company.getId())));
+        UI.getCurrent().navigate(CompanyEditorView.class, params);
+    }
+
+    private void create() {
+        QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(0)));
         UI.getCurrent().navigate(CompanyEditorView.class, params);
     }
 

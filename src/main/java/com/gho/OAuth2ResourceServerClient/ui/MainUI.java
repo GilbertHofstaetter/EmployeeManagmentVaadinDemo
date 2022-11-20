@@ -37,7 +37,6 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
         employeeView = createMenuLink(EmployeeView.class, "Employee", VaadinIcon.EDIT.create());
         companyView = createMenuLink(CompanyView.class, "Company", VaadinIcon.EDIT.create());
 
-
         final UnorderedList list = new UnorderedList(new ListItem(testView), new ListItem(swagger), new ListItem(employeeView), new ListItem(companyView));
         final Nav navigation = new Nav(list);
         addToDrawer(navigation);

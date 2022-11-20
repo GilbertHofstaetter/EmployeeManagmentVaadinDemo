@@ -100,7 +100,10 @@ public class CompanyEditorView extends Main implements HasUrlParameter<String> {
 
         try {
             Long id = Long.valueOf((String) parametersMap.get("id").toArray()[0]);
-            load(id);
+            if (id == 0)
+                create();
+            else
+                load(id);
         } catch (Exception e) {}
     }
 

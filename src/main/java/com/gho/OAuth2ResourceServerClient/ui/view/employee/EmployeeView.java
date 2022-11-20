@@ -49,6 +49,8 @@ public class EmployeeView extends Main {
     protected Grid<Employee> grid;
 
     protected TextField filter;
+
+    protected Button createButton;
     private final EmployeeRepository employeeRepository;
 
     private final EmployeeService employeeService;
@@ -74,8 +76,11 @@ public class EmployeeView extends Main {
         addImageColumn();
         addEditDeleteButton();
 
+        createButton = new Button(VaadinIcon.FILE.create(),event -> {
+            create();
+        });
         this.filter = new TextField();
-        HorizontalLayout actions = new HorizontalLayout(filter);
+        HorizontalLayout actions = new HorizontalLayout(createButton, filter);
         layout.addAndExpand(actions, grid);
         filter.setPlaceholder("Filter by last name");
 
@@ -169,6 +174,11 @@ public class EmployeeView extends Main {
 
     private void edit(Employee employee) {
         QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(employee.getId())));
+        UI.getCurrent().navigate(EmployeeEditorView.class, params);
+    }
+
+    private void create() {
+        QueryParameters params = QueryParameters.simple(Collections.singletonMap("id", Long.toString(0)));
         UI.getCurrent().navigate(EmployeeEditorView.class, params);
     }
 
