@@ -79,7 +79,7 @@ public class CompanyView extends Main {
             create();
         });
         this.filter = new TextField();
-        HorizontalLayout actions = new HorizontalLayout(filter);
+        HorizontalLayout actions = new HorizontalLayout(createButton, filter);
         layout.addAndExpand(actions, grid);
         filter.setPlaceholder("Filter by name");
 
