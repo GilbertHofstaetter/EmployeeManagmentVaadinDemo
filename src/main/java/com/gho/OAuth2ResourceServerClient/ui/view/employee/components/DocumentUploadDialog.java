@@ -7,10 +7,13 @@ import com.gho.OAuth2ResourceServerClient.repository.DocumentRepository;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.upload.AllFinishedEvent;
 import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
@@ -19,7 +22,7 @@ public class DocumentUploadDialog extends Dialog {
 
     private Employee employee;
 
-    private MemoryBuffer memoryBuffer;
+    private MultiFileMemoryBuffer memoryBuffer;
 
     private Upload singleFileUpload;
 
@@ -27,8 +30,15 @@ public class DocumentUploadDialog extends Dialog {
 
     public DocumentUploadDialog(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-        memoryBuffer = new MemoryBuffer();
+        memoryBuffer = new MultiFileMemoryBuffer();
         singleFileUpload = new Upload(memoryBuffer);
+        singleFileUpload.addFileRejectedListener(event -> {
+            String errorMessage = event.getErrorMessage();
+
+            Notification notification = Notification.show(errorMessage, 5000,
+                    Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        });
         add(singleFileUpload);
         singleFileUpload.addSucceededListener(event -> upload(event));
 
@@ -41,8 +51,8 @@ public class DocumentUploadDialog extends Dialog {
     }
 
     void upload(SucceededEvent event) {
-        InputStream fileData = memoryBuffer.getInputStream();
         String fileName = event.getFileName();
+        InputStream fileData = memoryBuffer.getInputStream(fileName);
         long contentLength = event.getContentLength();
         String mimeType = event.getMIMEType();
 

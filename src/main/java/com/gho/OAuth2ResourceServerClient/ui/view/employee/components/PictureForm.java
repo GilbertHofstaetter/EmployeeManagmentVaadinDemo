@@ -26,10 +26,10 @@ import java.util.List;
 public class PictureForm extends HorizontalLayout {
 
     private Employee employee;
-    MemoryBuffer memoryBuffer;
-    Upload singleFileUpload;
+    private MemoryBuffer memoryBuffer;
+    private Upload singleFileUpload;
 
-    Image image = new Image();
+    private Image image = new Image();
 
     private final PictureRepository pictureRepository;
 

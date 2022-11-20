@@ -11,6 +11,7 @@ import com.vaadin.flow.component.upload.AllFinishedEvent;
 import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
@@ -19,7 +20,7 @@ public class DocumentUploadDialog extends Dialog {
 
     private Company company;
 
-    private MemoryBuffer memoryBuffer;
+    private MultiFileMemoryBuffer memoryBuffer;
 
     private Upload singleFileUpload;
 
@@ -27,7 +28,7 @@ public class DocumentUploadDialog extends Dialog {
 
     public DocumentUploadDialog(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-        memoryBuffer = new MemoryBuffer();
+        memoryBuffer = new MultiFileMemoryBuffer();
         singleFileUpload = new Upload(memoryBuffer);
         add(singleFileUpload);
         singleFileUpload.addSucceededListener(event -> upload(event));
@@ -41,8 +42,8 @@ public class DocumentUploadDialog extends Dialog {
     }
 
     void upload(SucceededEvent event) {
-        InputStream fileData = memoryBuffer.getInputStream();
         String fileName = event.getFileName();
+        InputStream fileData = memoryBuffer.getInputStream(fileName);
         long contentLength = event.getContentLength();
         String mimeType = event.getMIMEType();
 
