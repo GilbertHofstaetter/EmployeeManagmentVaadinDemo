@@ -22,6 +22,10 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
 
     private final H1 pageTitle;
 
+    private final Button back;
+
+    private final Button forward;
+
     private final RouterLink testView;
 
     private final RouterLink employeeView;
@@ -50,12 +54,23 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
         pageTitle.getStyle().set("margin", "0");
         pageTitle.setSizeFull();
 
+        back = createMenuButton("",VaadinIcon.ARROW_BACKWARD.create());
+        back.addClickListener(event -> {
+            backNavigation();
+        });
+        forward = createMenuButton("",VaadinIcon.ARROW_FORWARD.create());
+        forward.addClickListener(event -> {
+            forwardNavigation();
+        });
+
+        HorizontalLayout forwardBackwardNavigationLayout = new HorizontalLayout(back, forward);
+
         Button logout = createMenuButton("Logout", VaadinIcon.SIGN_OUT.create());
         logout.addClickListener(e -> logout());
         logout.getElement().setAttribute("title", "Logout (Ctrl+L)");
         FlexLayout logoutButtonWrapper = new FlexLayout(logout);
 
-        HorizontalLayout layout = new HorizontalLayout(new DrawerToggle(), pageTitle, logoutButtonWrapper);
+        HorizontalLayout layout = new HorizontalLayout(new DrawerToggle(), forwardBackwardNavigationLayout, pageTitle, logoutButtonWrapper);
         layout.setSizeFull();
         layout.setSpacing(true);
         layout.expand(logoutButtonWrapper);
@@ -110,5 +125,13 @@ public class MainUI extends AppLayout implements AfterNavigationObserver {
 
     private void logout() {
         UI.getCurrent().getPage().setLocation("/logout");
+    }
+
+    private void backNavigation() {
+        UI.getCurrent().getPage().getHistory().back();
+    }
+
+    private void forwardNavigation() {
+        UI.getCurrent().getPage().getHistory().forward();
     }
 }
