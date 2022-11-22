@@ -26,6 +26,7 @@ import com.vaadin.flow.server.StreamRegistration;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("companyDocumentForm")
+@Scope("prototype")
 public class DocumentForm extends VerticalLayout implements ComponentEventListener<AllFinishedEvent> {
 
     protected Company company;

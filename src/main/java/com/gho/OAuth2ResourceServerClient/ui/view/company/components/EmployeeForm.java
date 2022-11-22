@@ -26,6 +26,7 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.server.StreamResource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component("companyEmployeeForm")
+@Scope("prototype")
 public class EmployeeForm extends VerticalLayout implements ComponentEventListener {
 
     protected Company company;
