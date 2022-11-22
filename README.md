@@ -29,6 +29,13 @@ Vaadin (v23) has been added as web front end and postgres as database.
 
 * http://localhost:8080/ui
 
-![List Employee in Vaadin](https://github.com/GilbertHofstaetter/spring-boot-oauth2-resource-server-client-vaadin/blob/main/Employee_Vaadin.png)
+![EmployeeView](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/EmployeeView.png)
+![EmployeeEditor](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/EmployeeEditor.png)
+![EmployeeEditor-Documents](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/EmployeeEditor-Documents.png)
+![CompanyView](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/CompanyView.png)
+![CompanyEditor](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/CompanyEditor.png)
+![CompanyEditor-Employees](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/CompanyEditor-Employees.png)
+![CompanyEditor-EmployeesLinkDialog](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/CompanyEditor-EmployeesLinkDialog.png)
+![Swagger-UI](https://github.com/GilbertHofstaetter/EmployeeManagmentVaadinDemo/blob/main/Swagger-UI.png)
 
 
