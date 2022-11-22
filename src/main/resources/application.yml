@@ -13,7 +13,7 @@ spring:
       ddl-auto: update  #validate #create
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://@postgres.host@:5432/postgres
     username: postgres
     password: munp2ki74l
     driver-class-name: org.postgresql.Driver

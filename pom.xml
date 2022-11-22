@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -117,12 +117,14 @@
             </activation>
             <properties>
                 <keycloak.host>localhost</keycloak.host>
+                <postgres.host>localhost</postgres.host>
             </properties>
         </profile>
         <profile>
             <id>docker-keycloak</id>
             <properties>
                 <keycloak.host>keycloak</keycloak.host>
+                <postgres.host>postgresql</postgres.host>
             </properties>
             <build>
                 <plugins>
@@ -151,6 +153,7 @@
             <id>production</id>
             <properties>
                 <keycloak.host>localhost</keycloak.host>
+                <postgres.host>localhost</postgres.host>
             </properties>
             <build>
                 <plugins>
