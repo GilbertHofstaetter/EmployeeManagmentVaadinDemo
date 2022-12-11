@@ -72,13 +72,11 @@ public class IndexController {
 
     @GetMapping("/testCompanyListApi")
     @PreAuthorize("hasAnyAuthority('ROLE_admin') AND hasAuthority('SCOPE_read')") //only in combination with client login
-    public List<Company> testCompanyListApi() {
+    public String testCompanyListApi() {
         try {
-            ResponseEntity<Company[]> response = apiClient.getRestTemplate().exchange(RequestEntity.get(new URI("http://localhost:8080/api/company/list")).build(), Company[].class);
-            Company[] companies = response.getBody();
-            List<Company> list = Arrays.asList(companies);
+            ResponseEntity<String> response = apiClient.getRestTemplate().exchange(RequestEntity.get(new URI("http://localhost:8080/api/company/listAll")).build(), String.class);
 
-            return list;
+            return response.getBody();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
