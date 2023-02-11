@@ -5,6 +5,8 @@ import com.gho.OAuth2ResourceServerClient.repository.PictureRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,9 @@ import java.util.Optional;
 public class PictureController {
 
     @Autowired
+    private ApplicationEventPublisher publisher;
+
+    @Autowired
     PictureRepository pictureRepository;
 
     // Single File download
@@ -34,20 +39,25 @@ public class PictureController {
     @Operation(summary = "Download a File")
     public ResponseEntity<Resource> downloadPhoto(long id) throws IOException {
         Optional<Picture> picture = pictureRepository.findById(id);
-        if (!picture.isEmpty()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + picture.get().getFileName());
-            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-            headers.add("Pragma", "no-cache");
-            headers.add("Expires", "0");
-            ByteArrayResource resource = new ByteArrayResource(picture.get().getPhoto());
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .contentLength(picture.get().getPhoto().length)
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(resource);
-        } else
-            return ResponseEntity.notFound().build();
+        try {
+            if (!picture.isEmpty()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + picture.get().getFileName());
+                headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.add("Pragma", "no-cache");
+                headers.add("Expires", "0");
+                ByteArrayResource resource = new ByteArrayResource(picture.get().getPhoto());
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentLength(picture.get().getPhoto().length)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(resource);
+            } else
+                return ResponseEntity.notFound().build();
+        }finally {
+            if (!picture.isEmpty())
+                publisher.publishEvent(new FileDownloadEvent(this, picture.get().getFileName()));
+        }
     }
 
     // Single File upload
@@ -86,6 +96,19 @@ public class PictureController {
     public Page<Picture> list(@ParameterObject Pageable pageable) {
         Page<Picture> pictures = pictureRepository.findAll(pageable);
         return pictures;
+    }
+
+    public class FileDownloadEvent extends ApplicationEvent {
+
+        private String name;
+        public FileDownloadEvent(Object source, String fileName) {
+            super(source);
+            this.name = fileName;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
 }

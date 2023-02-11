@@ -56,7 +56,7 @@ public class SecurityConfig {
                 //https://vaadin.com/forum/thread/15871148/spring-security-vaadin-push
                 .antMatchers("/VAADIN/**", "/favicon.ico", "/robots.txt", "/manifest.webmanifest", "/sw.js",
                         "/offline.html", "/icons/**", "/images/**", "/styles/**", "/h2-console/**", "/sw-runtime-resources-precache.js",
-                        "/vaadinServlet/PUSH/**", "/vaadinServlet/HEARTBEAT/**").permitAll()
+                        "/vaadinServlet/PUSH/**", "/vaadinServlet/HEARTBEAT/**", "/api/api-docs").permitAll()
                 .antMatchers("/ui/*").hasAnyRole("user", "admin")
                 .antMatchers(HttpMethod.GET, "/api/employee/list").hasAuthority("ROLE_user")
                 .antMatchers("/api/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAnyRole("admin")
